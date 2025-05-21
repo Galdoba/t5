@@ -34,6 +34,7 @@ func parseDiceCode(code string) rollRule {
 	rr.diceNum = -1
 	code = strings.ToUpper(code)
 	code = strings.ReplaceAll(code, " ", "")
+	code = strings.ReplaceAll(code, "FLUX", "2d6-7")
 	re := regexp.MustCompile(`(\d*)([D]+)(\d*)`)
 	subs := re.FindStringSubmatch(code)
 	rr = parse(subs)
