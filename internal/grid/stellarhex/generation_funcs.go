@@ -74,6 +74,7 @@ func (sh *StellarHex) defineStarLikeObjectsPresence(dp *dice.Dicepool) error {
 	switch dp.Check("1d6", "6") {
 	case false:
 		sh.D = "-"
+		return nil
 	case true:
 		sh.D = getPresence(dp, code, goal)
 	}
