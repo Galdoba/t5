@@ -9,13 +9,12 @@ import (
 )
 
 func TestStarGenerator_Generate(t *testing.T) {
-	var seed int64 = 4253622
 	gn := StarGenerator{
-		seed:      seed,
-		dp:        dice.NewDicepool(dice.WithSeed(seed)),
-		method:    GenerationMethod_T5basic,
+		dp:        dice.NewDicepool(dice.WithSeed(4253622)),
+		method:    star.GenerationMethod_T5basic,
 		generated: &star.Star{},
 	}
-	fmt.Println(gn.Generate(star.WithPosition(star.Near)))
-	fmt.Println(gn.generated)
+	st, err := gn.Generate(star.WithPosition(star.Near))
+	fmt.Println(err)
+	fmt.Println(st)
 }

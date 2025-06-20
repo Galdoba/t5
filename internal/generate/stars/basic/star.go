@@ -20,7 +20,7 @@ func NewStar(dp *dice.Dicepool, options ...star.StarOption) (*star.Star, error) 
 		OrbitOffset:  -1,
 		HZO:          -1,
 		JumpShadow:   -1,
-		HexOrbit:     -1, //-1 - undefined; -2 - companion; -3 - rogue
+		OrbitIndex:   -1, //-1 - undefined; -2 - companion; -3 - rogue
 	}
 	for _, set := range options {
 		set(&st)

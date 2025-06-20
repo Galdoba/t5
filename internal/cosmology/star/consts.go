@@ -49,3 +49,5 @@ var SubType_7 = SubType("7")
 var SubType_8 = SubType("8")
 var SubType_9 = SubType("9")
 var SubType_NUL = SubType("")
+
+var GenerationMethod_T5basic = "T5 basic"

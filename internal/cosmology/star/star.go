@@ -10,7 +10,7 @@ type Star struct {
 	OrbitOffset  int            //planets in orbits lower than this are consumed/burned
 	HZO          int            //Habitable Orbit
 	JumpShadow   int            //orbits equal or lower are in star's shadow
-	HexOrbit     int            //position relative to hex center (-2 for rogue)
+	OrbitIndex   int            //position relative to hex center (-2 for rogue)
 }
 
 func (st *Star) String() string {
