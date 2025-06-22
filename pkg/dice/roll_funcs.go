@@ -10,12 +10,7 @@ import (
 func (dp *Dicepool) Check(code, goal string, rollOpts ...RollOption) bool {
 	sum := dp.Sum(code, rollOpts...)
 	goalValues := parseGoal(goal)
-	for _, val := range goalValues {
-		if val == sum {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(goalValues, sum)
 }
 
 func parseGoal(goal string) []int {
@@ -80,4 +75,8 @@ func uniqueInts(sl []int) []int {
 	}
 	slices.Sort(sl)
 	return sl
+}
+
+func (dp *Dicepool) Sum1D(options ...RollOption) int {
+	return dp.Sum("1d6", options...)
 }
