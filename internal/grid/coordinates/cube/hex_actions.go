@@ -1,4 +1,4 @@
-package hexgrid
+package cube
 
 import (
 	"math"
@@ -15,7 +15,7 @@ const (
 
 // Distance возвращает расстояние между двумя гексами в шагах
 func Distance(a, b Hex) int {
-	return (abs(a.q-b.q) + abs(a.r-b.r) + abs(a.s-b.s)) / 2
+	return (abs(a.Q-b.Q) + abs(a.R-b.R) + abs(a.S-b.S)) / 2
 }
 
 func abs(x int) int {
@@ -26,12 +26,12 @@ func abs(x int) int {
 }
 
 var directions = []Hex{
-	{q: 0, r: -1, s: 1}, // 0: north
-	{q: 1, r: -1, s: 0}, // 1: northEast
-	{q: 1, r: 0, s: -1}, // 2: southEast
-	{q: 0, r: 1, s: -1}, // 3: south
-	{q: -1, r: 1, s: 0}, // 4: southWest
-	{q: -1, r: 0, s: 1}, // 5: northWest
+	{Q: 0, R: -1, S: 1}, // 0: north
+	{Q: 1, R: -1, S: 0}, // 1: northEast
+	{Q: 1, R: 0, S: -1}, // 2: southEast
+	{Q: 0, R: 1, S: -1}, // 3: south
+	{Q: -1, R: 1, S: 0}, // 4: southWest
+	{Q: -1, R: 0, S: 1}, // 5: northWest
 }
 
 // Neighbors возвращает 6 соседних гексов в порядке направлений
@@ -39,9 +39,9 @@ func Neighbors(h Hex) []Hex {
 	neighbors := make([]Hex, 0, 6)
 	for _, d := range directions {
 		neighbors = append(neighbors, Hex{
-			q: h.q + d.q,
-			r: h.r + d.r,
-			s: h.s + d.s,
+			Q: h.Q + d.Q,
+			R: h.R + d.R,
+			S: h.S + d.S,
 		})
 	}
 	return neighbors
@@ -58,9 +58,9 @@ func LineDrawing(a, b Hex) []Hex {
 	// Линейная интерполяция для N сегментов
 	for i := 1; i <= N; i++ {
 		t := float64(i) / float64(N)
-		q := lerp(float64(a.q), float64(b.q), t)
-		r := lerp(float64(a.r), float64(b.r), t)
-		s := lerp(float64(a.s), float64(b.s), t)
+		q := lerp(float64(a.Q), float64(b.Q), t)
+		r := lerp(float64(a.R), float64(b.R), t)
+		s := lerp(float64(a.S), float64(b.S), t)
 
 		// Округляем до ближайшего гекса
 		hex := roundHex(q, r, s)
@@ -93,9 +93,9 @@ func roundHex(q, r, s float64) Hex {
 	}
 
 	return Hex{
-		q: int(rq),
-		r: int(rr),
-		s: int(rs),
+		Q: int(rq),
+		R: int(rr),
+		S: int(rs),
 	}
 }
 
@@ -135,9 +135,9 @@ func move(h Hex, direction, steps int) Hex {
 func neighbor(h Hex, direction int) Hex {
 	d := directions[direction]
 	return Hex{
-		q: h.q + d.q,
-		r: h.r + d.r,
-		s: h.s + d.s,
+		Q: h.Q + d.Q,
+		R: h.R + d.R,
+		S: h.S + d.S,
 	}
 }
 
@@ -183,9 +183,9 @@ func SpiralMaps(center Hex, radius int) (map[int]Hex, map[Hex]int) {
 // Vector выполняет покоординатное сложение двух гексов
 func Vector(start, change Hex) Hex {
 	return Hex{
-		q: start.q + change.q,
-		r: start.r + change.r,
-		s: start.s + change.s,
+		Q: start.Q + change.Q,
+		R: start.R + change.R,
+		S: start.S + change.S,
 	}
 }
 
@@ -229,3 +229,18 @@ func Rotate(start, center Hex, steps int) Hex {
 		return ring[newPos]
 	}
 }
+
+/*
+X12345678|
+0  ____  |
+1 /    \ |+--------+
+2/      \||        |
+3\      /||        +--------+
+          |        |        |
+4 \____/ |+--------+        +
+          |        |        |
+		  +        +--------+
+
+
+
+*/

@@ -1,18 +1,18 @@
-package hexgrid
+package cube
 
 import "testing"
 
 func TestNeighborsWithNewDirections(t *testing.T) {
-	center := NewHex(0, 0, 0)
+	center := NewCube(0, 0, 0)
 	neighbors := Neighbors(center)
 
 	expected := []Hex{
-		{q: 0, r: -1, s: 1}, // север
-		{q: 1, r: -1, s: 0}, // северо-восток
-		{q: 1, r: 0, s: -1}, // юго-восток
-		{q: 0, r: 1, s: -1}, // юг
-		{q: -1, r: 1, s: 0}, // юго-запад
-		{q: -1, r: 0, s: 1}, // северо-запад
+		{Q: 0, R: -1, S: 1}, // север
+		{Q: 1, R: -1, S: 0}, // северо-восток
+		{Q: 1, R: 0, S: -1}, // юго-восток
+		{Q: 0, R: 1, S: -1}, // юг
+		{Q: -1, R: 1, S: 0}, // юго-запад
+		{Q: -1, R: 0, S: 1}, // северо-запад
 	}
 
 	if len(neighbors) != 6 {
@@ -20,26 +20,26 @@ func TestNeighborsWithNewDirections(t *testing.T) {
 	}
 
 	for i, n := range neighbors {
-		if n.q != expected[i].q || n.r != expected[i].r || n.s != expected[i].s {
+		if n.Q != expected[i].Q || n.R != expected[i].R || n.S != expected[i].S {
 			t.Errorf("Неверный сосед %d: ожидалось (%d,%d,%d), получил (%d,%d,%d)",
-				i, expected[i].q, expected[i].r, expected[i].s, n.q, n.r, n.s)
+				i, expected[i].Q, expected[i].R, expected[i].S, n.Q, n.R, n.S)
 		}
 	}
 }
 
 func TestMovement(t *testing.T) {
-	center := NewHex(0, 0, 0)
+	center := NewCube(0, 0, 0)
 
 	tests := []struct {
 		direction int
 		expected  Hex
 	}{
-		{0, Hex{q: 0, r: -1, s: 1}},
-		{1, Hex{q: 1, r: -1, s: 0}},
-		{2, Hex{q: 1, r: 0, s: -1}},
-		{3, Hex{q: 0, r: 1, s: -1}},
-		{4, Hex{q: -1, r: 1, s: 0}},
-		{5, Hex{q: -1, r: 0, s: 1}},
+		{0, Hex{Q: 0, R: -1, S: 1}},
+		{1, Hex{Q: 1, R: -1, S: 0}},
+		{2, Hex{Q: 1, R: 0, S: -1}},
+		{3, Hex{Q: 0, R: 1, S: -1}},
+		{4, Hex{Q: -1, R: 1, S: 0}},
+		{5, Hex{Q: -1, R: 0, S: 1}},
 	}
 
 	for _, test := range tests {
@@ -47,14 +47,14 @@ func TestMovement(t *testing.T) {
 		if result != test.expected {
 			t.Errorf("Направление %d: ожидалось (%d,%d,%d), получил (%d,%d,%d)",
 				test.direction,
-				test.expected.q, test.expected.r, test.expected.s,
-				result.q, result.r, result.s)
+				test.expected.Q, test.expected.R, test.expected.S,
+				result.Q, result.R, result.S)
 		}
 	}
 }
 
 func TestSpiralMaps(t *testing.T) {
-	center := NewHex(0, 0, 0)
+	center := NewCube(0, 0, 0)
 	indexToHex, hexToIndex := SpiralMaps(center, 2)
 
 	// Проверка центрального гекса
@@ -128,7 +128,7 @@ func TestSpiralMaps(t *testing.T) {
 
 func TestSpiralMapsEdgeCases(t *testing.T) {
 	// Тест с радиусом 0
-	center := NewHex(0, 0, 0)
+	center := NewCube(0, 0, 0)
 	indexToHex, hexToIndex := SpiralMaps(center, 0)
 
 	if len(indexToHex) != 1 || len(hexToIndex) != 1 {
@@ -159,27 +159,27 @@ func TestVector(t *testing.T) {
 	}{
 		{
 			name:     "Базовое сложение",
-			start:    NewHex(1, 2, -3),
-			change:   NewHex(2, -1, -1),
-			expected: Hex{q: 3, r: 1, s: -4},
+			start:    NewCube(1, 2, -3),
+			change:   NewCube(2, -1, -1),
+			expected: Hex{Q: 3, R: 1, S: -4},
 		},
 		{
 			name:     "Нулевое изменение",
-			start:    NewHex(5, -3, -2),
-			change:   NewHex(0, 0, 0),
-			expected: Hex{q: 5, r: -3, s: -2},
+			start:    NewCube(5, -3, -2),
+			change:   NewCube(0, 0, 0),
+			expected: Hex{Q: 5, R: -3, S: -2},
 		},
 		{
 			name:     "Отрицательные координаты",
-			start:    NewHex(-3, 2, 1),
-			change:   NewHex(4, -5, 1),
-			expected: Hex{q: 1, r: -3, s: 2},
+			start:    NewCube(-3, 2, 1),
+			change:   NewCube(4, -5, 1),
+			expected: Hex{Q: 1, R: -3, S: 2},
 		},
 		{
 			name:     "Крайние значения",
-			start:    NewHex(1000000, -500000, -500000),
-			change:   NewHex(-1000000, 1000000, 0),
-			expected: Hex{q: 0, r: 500000, s: -500000},
+			start:    NewCube(1000000, -500000, -500000),
+			change:   NewCube(-1000000, 1000000, 0),
+			expected: Hex{Q: 0, R: 500000, S: -500000},
 		},
 	}
 
@@ -187,16 +187,16 @@ func TestVector(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			result := Vector(tt.start, tt.change)
 
-			if result.Q() != tt.expected.Q() ||
-				result.R() != tt.expected.R() ||
-				result.S() != tt.expected.S() {
+			if result.Q != tt.expected.Q ||
+				result.R != tt.expected.R ||
+				result.S != tt.expected.S {
 				t.Errorf("Ожидалось (%d, %d, %d), получил (%d, %d, %d)",
-					tt.expected.Q(), tt.expected.R(), tt.expected.S(),
-					result.Q(), result.R(), result.S())
+					tt.expected.Q, tt.expected.R, tt.expected.S,
+					result.Q, result.R, result.S)
 			}
 
 			// Проверка инварианта q+r+s=0
-			sum := result.Q() + result.R() + result.S()
+			sum := result.Q + result.R + result.S
 			if sum != 0 {
 				t.Errorf("Нарушен инвариант: q+r+s=%d, ожидалось 0", sum)
 			}
@@ -205,29 +205,29 @@ func TestVector(t *testing.T) {
 }
 
 func TestVectorWithDirections(t *testing.T) {
-	center := NewHex(0, 0, 0)
-	north := NewHex(0, -1, 1) // Направление 0: север
+	center := NewCube(0, 0, 0)
+	north := NewCube(0, -1, 1) // Направление 0: север
 
 	// Проверка перемещения
 	moved := Vector(center, north)
-	expected := NewHex(0, -1, 1)
+	expected := NewCube(0, -1, 1)
 
-	if moved.Q() != expected.Q() || moved.R() != expected.R() || moved.S() != expected.S() {
+	if moved.Q != expected.Q || moved.R != expected.R || moved.S != expected.S {
 		t.Errorf("Ожидалось (%d,%d,%d), получил (%d,%d,%d)",
-			expected.Q(), expected.R(), expected.S(),
-			moved.Q(), moved.R(), moved.S())
+			expected.Q, expected.R, expected.S,
+			moved.Q, moved.R, moved.S)
 	}
 
 	// Двойное перемещение
 	movedTwice := Vector(moved, north)
-	expectedTwice := NewHex(0, -2, 2)
+	expectedTwice := NewCube(0, -2, 2)
 
-	if movedTwice.Q() != expectedTwice.Q() ||
-		movedTwice.R() != expectedTwice.R() ||
-		movedTwice.S() != expectedTwice.S() {
+	if movedTwice.Q != expectedTwice.Q ||
+		movedTwice.R != expectedTwice.R ||
+		movedTwice.S != expectedTwice.S {
 		t.Errorf("Ожидалось (%d,%d,%d), получил (%d,%d,%d)",
-			expectedTwice.Q(), expectedTwice.R(), expectedTwice.S(),
-			movedTwice.Q(), movedTwice.R(), movedTwice.S())
+			expectedTwice.Q, expectedTwice.R, expectedTwice.S,
+			movedTwice.Q, movedTwice.R, movedTwice.S)
 	}
 }
 
