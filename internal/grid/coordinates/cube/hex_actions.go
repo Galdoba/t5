@@ -14,7 +14,7 @@ const (
 )
 
 // Distance возвращает расстояние между двумя гексами в шагах
-func Distance(a, b Hex) int {
+func Distance(a, b Cube) int {
 	return (abs(a.Q-b.Q) + abs(a.R-b.R) + abs(a.S-b.S)) / 2
 }
 
@@ -25,7 +25,7 @@ func abs(x int) int {
 	return x
 }
 
-var directions = []Hex{
+var directions = []Cube{
 	{Q: 0, R: -1, S: 1}, // 0: north
 	{Q: 1, R: -1, S: 0}, // 1: northEast
 	{Q: 1, R: 0, S: -1}, // 2: southEast
@@ -35,10 +35,10 @@ var directions = []Hex{
 }
 
 // Neighbors возвращает 6 соседних гексов в порядке направлений
-func Neighbors(h Hex) []Hex {
-	neighbors := make([]Hex, 0, 6)
+func Neighbors(h Cube) []Cube {
+	neighbors := make([]Cube, 0, 6)
 	for _, d := range directions {
-		neighbors = append(neighbors, Hex{
+		neighbors = append(neighbors, Cube{
 			Q: h.Q + d.Q,
 			R: h.R + d.R,
 			S: h.S + d.S,
@@ -48,9 +48,9 @@ func Neighbors(h Hex) []Hex {
 }
 
 // LineDrawing возвращает гексы на прямой линии между двумя точками
-func LineDrawing(a, b Hex) []Hex {
+func LineDrawing(a, b Cube) []Cube {
 	N := Distance(a, b)
-	results := make([]Hex, 0, N+1)
+	results := make([]Cube, 0, N+1)
 
 	// Добавляем начальную точку
 	results = append(results, a)
@@ -63,7 +63,7 @@ func LineDrawing(a, b Hex) []Hex {
 		s := lerp(float64(a.S), float64(b.S), t)
 
 		// Округляем до ближайшего гекса
-		hex := roundHex(q, r, s)
+		hex := roundCube(q, r, s)
 		results = append(results, hex)
 	}
 
@@ -74,7 +74,7 @@ func lerp(a, b, t float64) float64 {
 	return a + (b-a)*t
 }
 
-func roundHex(q, r, s float64) Hex {
+func roundCube(q, r, s float64) Cube {
 	rq := math.Round(q)
 	rr := math.Round(r)
 	rs := math.Round(s)
@@ -92,7 +92,7 @@ func roundHex(q, r, s float64) Hex {
 		rs = -rq - rr
 	}
 
-	return Hex{
+	return Cube{
 		Q: int(rq),
 		R: int(rr),
 		S: int(rs),
@@ -100,17 +100,17 @@ func roundHex(q, r, s float64) Hex {
 }
 
 // Ring возвращает гексы на заданном расстоянии от центра
-func Ring(center Hex, radius int) []Hex {
+func Ring(center Cube, radius int) []Cube {
 	if radius < 0 {
-		return []Hex{}
+		return []Cube{}
 	}
 	if radius == 0 {
-		return []Hex{center}
+		return []Cube{center}
 	}
 
 	// Начинаем с направления north и двигаемся на radius шагов
 	// после чего выбираем следующее направление
-	ring := make([]Hex, 0, 6*radius)
+	ring := make([]Cube, 0, 6*radius)
 	current := move(center, 0, radius)
 	directionOptimization := 2
 	for direction := range 6 {
@@ -123,7 +123,7 @@ func Ring(center Hex, radius int) []Hex {
 }
 
 // Вспомогательная функция для перемещения на несколько шагов
-func move(h Hex, direction, steps int) Hex {
+func move(h Cube, direction, steps int) Cube {
 	current := h
 	for range steps {
 		current = neighbor(current, direction)
@@ -132,9 +132,9 @@ func move(h Hex, direction, steps int) Hex {
 }
 
 // Получение соседа в определенном направлении
-func neighbor(h Hex, direction int) Hex {
+func neighbor(h Cube, direction int) Cube {
 	d := directions[direction]
-	return Hex{
+	return Cube{
 		Q: h.Q + d.Q,
 		R: h.R + d.R,
 		S: h.S + d.S,
@@ -142,8 +142,8 @@ func neighbor(h Hex, direction int) Hex {
 }
 
 // Spiral возвращает все гексы в пределах заданного радиуса
-func Spiral(center Hex, radius int) []Hex {
-	results := []Hex{center}
+func Spiral(center Cube, radius int) []Cube {
+	results := []Cube{center}
 
 	for k := 1; k <= radius; k++ {
 		ring := Ring(center, k)
@@ -154,42 +154,42 @@ func Spiral(center Hex, radius int) []Hex {
 }
 
 // SpiralMaps возвращает две карты для спирального обхода
-func SpiralMaps(center Hex, radius int) (map[int]Hex, map[Hex]int) {
-	indexToHex := make(map[int]Hex)
-	hexToIndex := make(map[Hex]int)
+func SpiralMaps(center Cube, radius int) (map[int]Cube, map[Cube]int) {
+	indexToCube := make(map[int]Cube)
+	hexToIndex := make(map[Cube]int)
 	if radius < 0 {
-		return indexToHex, hexToIndex
+		return indexToCube, hexToIndex
 	}
 
 	// Центральный гекс
 	counter := 0
-	indexToHex[counter] = center
+	indexToCube[counter] = center
 	hexToIndex[center] = counter
 	counter++
 
 	// Обходим кольца от 1 до заданного радиуса
 	for r := 1; r <= radius; r++ {
-		ringHexes := Ring(center, r)
-		for _, hex := range ringHexes {
-			indexToHex[counter] = hex
+		ringOfHexes := Ring(center, r)
+		for _, hex := range ringOfHexes {
+			indexToCube[counter] = hex
 			hexToIndex[hex] = counter
 			counter++
 		}
 	}
 
-	return indexToHex, hexToIndex
+	return indexToCube, hexToIndex
 }
 
 // Vector выполняет покоординатное сложение двух гексов
-func Vector(start, change Hex) Hex {
-	return Hex{
+func Vector(start, change Cube) Cube {
+	return Cube{
 		Q: start.Q + change.Q,
 		R: start.R + change.R,
 		S: start.S + change.S,
 	}
 }
 
-func Rotate(start, center Hex, steps int) Hex {
+func Rotate(start, center Cube, steps int) Cube {
 	// Если start совпадает с центром или нулевые шаги
 	if start == center || steps == 0 {
 		return start
