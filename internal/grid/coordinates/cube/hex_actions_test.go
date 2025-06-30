@@ -6,7 +6,7 @@ func TestNeighborsWithNewDirections(t *testing.T) {
 	center := NewCube(0, 0, 0)
 	neighbors := Neighbors(center)
 
-	expected := []Hex{
+	expected := []Cube{
 		{Q: 0, R: -1, S: 1}, // север
 		{Q: 1, R: -1, S: 0}, // северо-восток
 		{Q: 1, R: 0, S: -1}, // юго-восток
@@ -32,14 +32,14 @@ func TestMovement(t *testing.T) {
 
 	tests := []struct {
 		direction int
-		expected  Hex
+		expected  Cube
 	}{
-		{0, Hex{Q: 0, R: -1, S: 1}},
-		{1, Hex{Q: 1, R: -1, S: 0}},
-		{2, Hex{Q: 1, R: 0, S: -1}},
-		{3, Hex{Q: 0, R: 1, S: -1}},
-		{4, Hex{Q: -1, R: 1, S: 0}},
-		{5, Hex{Q: -1, R: 0, S: 1}},
+		{0, Cube{Q: 0, R: -1, S: 1}},
+		{1, Cube{Q: 1, R: -1, S: 0}},
+		{2, Cube{Q: 1, R: 0, S: -1}},
+		{3, Cube{Q: 0, R: 1, S: -1}},
+		{4, Cube{Q: -1, R: 1, S: 0}},
+		{5, Cube{Q: -1, R: 0, S: 1}},
 	}
 
 	for _, test := range tests {
@@ -66,7 +66,7 @@ func TestSpiralMaps(t *testing.T) {
 	}
 
 	// Ожидаемый порядок для радиуса 1
-	radius1Order := []Hex{
+	radius1Order := []Cube{
 		neighbor(center, 0), // север
 		neighbor(center, 1), // северо-восток
 		neighbor(center, 2), // юго-восток
@@ -153,33 +153,33 @@ func TestSpiralMapsEdgeCases(t *testing.T) {
 func TestVector(t *testing.T) {
 	tests := []struct {
 		name     string
-		start    Hex
-		change   Hex
-		expected Hex
+		start    Cube
+		change   Cube
+		expected Cube
 	}{
 		{
 			name:     "Базовое сложение",
 			start:    NewCube(1, 2, -3),
 			change:   NewCube(2, -1, -1),
-			expected: Hex{Q: 3, R: 1, S: -4},
+			expected: Cube{Q: 3, R: 1, S: -4},
 		},
 		{
 			name:     "Нулевое изменение",
 			start:    NewCube(5, -3, -2),
 			change:   NewCube(0, 0, 0),
-			expected: Hex{Q: 5, R: -3, S: -2},
+			expected: Cube{Q: 5, R: -3, S: -2},
 		},
 		{
 			name:     "Отрицательные координаты",
 			start:    NewCube(-3, 2, 1),
 			change:   NewCube(4, -5, 1),
-			expected: Hex{Q: 1, R: -3, S: 2},
+			expected: Cube{Q: 1, R: -3, S: 2},
 		},
 		{
 			name:     "Крайние значения",
 			start:    NewCube(1000000, -500000, -500000),
 			change:   NewCube(-1000000, 1000000, 0),
-			expected: Hex{Q: 0, R: 500000, S: -500000},
+			expected: Cube{Q: 0, R: 500000, S: -500000},
 		},
 	}
 
@@ -235,39 +235,39 @@ func TestRing(t *testing.T) {
 	tests := []struct {
 		name string // description of this test case
 		// Named input parameters for target function.
-		center Hex
+		center Cube
 		radius int
-		want   []Hex
+		want   []Cube
 	}{
 		{
 			name:   "zero radius",
-			center: Hex{0, 0, 0},
+			center: Cube{0, 0, 0},
 			radius: 0,
-			want:   []Hex{{0, 0, 0}},
+			want:   []Cube{{0, 0, 0}},
 		}, // TODO: Add test cases.
 		{
 			name:   "negative radius",
-			center: Hex{0, 0, 0},
+			center: Cube{0, 0, 0},
 			radius: -4,
-			want:   []Hex{},
+			want:   []Cube{},
 		}, // TODO: Add test cases.
 		{
 			name:   "radius 1",
-			center: Hex{0, 0, 0},
+			center: Cube{0, 0, 0},
 			radius: 1,
-			want:   []Hex{{0, -1, 1}, {1, -1, 0}, {1, 0, -1}, {0, 1, -1}, {-1, 1, 0}, {-1, 0, 1}},
+			want:   []Cube{{0, -1, 1}, {1, -1, 0}, {1, 0, -1}, {0, 1, -1}, {-1, 1, 0}, {-1, 0, 1}},
 		}, // TODO: Add test cases.
 		{
 			name:   "radius 2",
-			center: Hex{0, 0, 0},
+			center: Cube{0, 0, 0},
 			radius: 2,
-			want:   []Hex{{0, -2, 2}, {1, -2, 1}, {2, -2, 0}, {2, -1, -1}, {2, 0, -2}, {1, 1, -2}, {0, 2, -2}, {-1, 2, -1}, {-2, 2, 0}, {-2, 1, 1}, {-2, 0, 2}, {-1, -1, 2}},
+			want:   []Cube{{0, -2, 2}, {1, -2, 1}, {2, -2, 0}, {2, -1, -1}, {2, 0, -2}, {1, 1, -2}, {0, 2, -2}, {-1, 2, -1}, {-2, 2, 0}, {-2, 1, 1}, {-2, 0, 2}, {-1, -1, 2}},
 		}, // TODO: Add test cases.
 		{
 			name:   "radius 3",
-			center: Hex{0, 0, 0},
+			center: Cube{0, 0, 0},
 			radius: 3,
-			want:   []Hex{{0, -3, 3}, {1, -3, 2}, {2, -3, 1}, {3, -3, 0}, {3, -2, -1}, {3, -1, -2}, {3, 0, -3}, {2, 1, -3}, {1, 2, -3}, {0, 3, -3}, {-1, 3, -2}, {-2, 3, -1}, {-3, 3, 0}, {-3, 2, 1}, {-3, 1, 2}, {-3, 0, 3}, {-2, -1, 3}, {-1, -2, 3}},
+			want:   []Cube{{0, -3, 3}, {1, -3, 2}, {2, -3, 1}, {3, -3, 0}, {3, -2, -1}, {3, -1, -2}, {3, 0, -3}, {2, 1, -3}, {1, 2, -3}, {0, 3, -3}, {-1, 3, -2}, {-2, 3, -1}, {-3, 3, 0}, {-3, 2, 1}, {-3, 1, 2}, {-3, 0, 3}, {-2, -1, 3}, {-1, -2, 3}},
 		}, // TODO: Add test cases.
 	}
 	for _, tt := range tests {

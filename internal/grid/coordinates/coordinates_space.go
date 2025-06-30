@@ -3,6 +3,7 @@ package coordinates
 import (
 	"fmt"
 
+	"github.com/Galdoba/t5/internal/grid/coordinates/convert"
 	"github.com/Galdoba/t5/internal/grid/coordinates/cube"
 	"github.com/Galdoba/t5/internal/grid/coordinates/global"
 	"github.com/Galdoba/t5/internal/grid/coordinates/local"
@@ -10,7 +11,7 @@ import (
 )
 
 type SpaceCoordinates struct {
-	hex    cube.Hex
+	cube   cube.Cube
 	global global.SpaceGlobal
 	local  local.SpaceSectorLocal
 }
@@ -25,16 +26,16 @@ func NewSpaceCoordinates(values ...int) SpaceCoordinates {
 	switch len(values) {
 	case 2:
 		sc.global = global.NewSpaceGlobal(values[0], values[1])
-		sc.hex = cube.NewCube(global_to_cube(sc.globalValues()))
-		sc.local = local.NewLocal(global_to_local(sc.globalValues()))
+		sc.cube = convert.GlobalToCube(sc.global)
+		sc.local = convert.GlobalToLocal(sc.global)
 	case 3:
-		sc.hex = cube.NewCube(values[0], values[1], values[2])
-		sc.global = global.NewSpaceGlobal(cube_to_global(sc.hexValues()))
-		sc.local = local.NewLocal(cube_to_local(sc.hexValues()))
+		sc.cube = cube.NewCube(values[0], values[1], values[2])
+		sc.global = convert.CubeToGlobal(sc.cube)
+		sc.local = convert.CubeToLocal(sc.cube)
 	case 4:
 		sc.local = local.NewLocal(values[0], values[1], values[2], values[3])
-		sc.hex = cube.NewCube(local_to_cube(sc.localValues()))
-		sc.global = global.NewSpaceGlobal(local_to_global(sc.localValues()))
+		sc.cube = convert.LocalToCube(sc.local)
+		sc.global = convert.LocalToGlobal(sc.local)
 	default:
 		panic(fmt.Sprintf("unsupported values quantity (%v)", len(values)))
 	}
@@ -47,19 +48,19 @@ func (sc SpaceCoordinates) StringSectorNameHex() string {
 }
 
 func (sc SpaceCoordinates) hexValues() (int, int, int) {
-	return sc.hex.Q, sc.hex.R, sc.hex.S
+	return sc.cube.Q, sc.cube.R, sc.cube.S
 }
 
-func (sc SpaceCoordinates) globalValues() (int, int) {
-	return sc.global.X, sc.global.Y
-}
+// func (sc SpaceCoordinates) globalValues() (int, int) {
+// 	return sc.global.X, sc.global.Y
+// }
 
-func (sc SpaceCoordinates) localValues() (int, int, int, int) {
-	return sc.local.SectorX, sc.local.SectorY, sc.local.X, sc.local.Y
-}
+// func (sc SpaceCoordinates) localValues() (int, int, int, int) {
+// 	return sc.local.SectorX, sc.local.SectorY, sc.local.X, sc.local.Y
+// }
 
 func (sc SpaceCoordinates) Validate() error {
-	if err := roundTrip(sc.hexValues()); err != nil {
+	if err := convert.RoundTrip(sc.hexValues()); err != nil {
 		return err
 	}
 	return nil

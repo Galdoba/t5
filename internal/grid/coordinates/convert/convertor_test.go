@@ -1,4 +1,4 @@
-package coordinates
+package convert
 
 import (
 	"fmt"
@@ -24,7 +24,7 @@ func Test_localToGlobal(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got2 := local_to_global(tt.sx, tt.sy, tt.lx, tt.ly)
+			got, got2 := Local_to_global(tt.sx, tt.sy, tt.lx, tt.ly)
 			// TODO: update the condition below to compare got with tt.want.
 			if got != tt.want {
 				t.Errorf("localToGlobal(X) = %v, want %v", got, tt.want)
@@ -56,7 +56,7 @@ func Test_localToCube(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got2, got3 := local_to_cube(tt.sx, tt.sy, tt.lx, tt.ly)
+			got, got2, got3 := Local_to_cube(tt.sx, tt.sy, tt.lx, tt.ly)
 			// TODO: update the condition below to compare got with tt.want.
 			if got != tt.want {
 				t.Errorf("localToCube(Q) %v = %v, want %v", tt.name, got, tt.want)
@@ -85,7 +85,7 @@ func Test_cubeToGlobal(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got2 := cube_to_global(tt.q, tt.r, tt.s)
+			got, got2 := Cube_to_global(tt.q, tt.r, tt.s)
 			// TODO: update the condition below to compare got with tt.want.
 			if got != tt.want {
 				t.Errorf("cubeToGlobal(X) %v = %v, want %v", tt.name, got, tt.want)
@@ -112,7 +112,7 @@ func Test_globalToCube(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got2, got3 := global_to_cube(tt.x, tt.y)
+			got, got2, got3 := Global_to_cube(tt.x, tt.y)
 			// TODO: update the condition below to compare got with tt.want.
 			if got != tt.want {
 				t.Errorf("globalToCube(Q) %v = %v, want %v", tt.name, got, tt.want)
@@ -136,12 +136,15 @@ func TestRoundTrips(t *testing.T) {
 				if q+r+s != 0 {
 					continue
 				}
-				if err := roundTrip_Cube(q, r, s); err != nil {
-					t.Errorf("%v", err)
-				}
+				// if err := roundTrip_Cube(q, r, s); err != nil {
+				// 	t.Errorf("%v", err)
+				// }
 
-				if err2 := roundTrip_CubeBack(q, r, s); err2 != nil {
-					t.Errorf("%v", err2)
+				// if err2 := roundTrip_CubeBack(q, r, s); err2 != nil {
+				// 	t.Errorf("%v", err2)
+				// }
+				if err := RoundTrip(q, r, s); err != nil {
+					t.Errorf("%v", err)
 				}
 				coversions += 6
 			}
