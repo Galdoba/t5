@@ -16,6 +16,22 @@ type SpaceCoordinates struct {
 	local  local.SpaceSectorLocal
 }
 
+type XY struct {
+	X int
+	Y int
+}
+
+type SectorBridge struct {
+	Sectors map[XY]Sector
+}
+
+type Sector struct {
+	X    int
+	Y    int
+	Name string
+	Abb  string
+}
+
 // NewSpaceCoordinates - cretare space hex coordinates based on values provided:
 //
 // 2 values: GlobalWorldCoordinates (X, Y)
@@ -51,13 +67,29 @@ func (sc SpaceCoordinates) hexValues() (int, int, int) {
 	return sc.cube.Q, sc.cube.R, sc.cube.S
 }
 
-// func (sc SpaceCoordinates) globalValues() (int, int) {
-// 	return sc.global.X, sc.global.Y
-// }
+func (sc SpaceCoordinates) SectorHex() string {
+	w := fmt.Sprintf("%v", sc.local.X)
+	if len(w) < 2 {
+		w = "0" + w
+	}
+	h := fmt.Sprintf("%v", sc.local.Y)
+	if len(h) < 2 {
+		h = "0" + h
+	}
+	return w + h
+}
 
-// func (sc SpaceCoordinates) localValues() (int, int, int, int) {
-// 	return sc.local.SectorX, sc.local.SectorY, sc.local.X, sc.local.Y
-// }
+func (sc SpaceCoordinates) CubeValues() (int, int, int) {
+	return sc.cube.Q, sc.cube.R, sc.cube.S
+}
+
+func (sc SpaceCoordinates) GlobalValues() (int, int) {
+	return sc.global.X, sc.global.Y
+}
+
+func (sc SpaceCoordinates) LocalValues() (int, int, int, int) {
+	return sc.local.SectorX, sc.local.SectorY, sc.local.X, sc.local.Y
+}
 
 func (sc SpaceCoordinates) Validate() error {
 	if err := convert.RoundTrip(sc.hexValues()); err != nil {

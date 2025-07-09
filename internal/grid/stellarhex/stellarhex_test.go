@@ -17,7 +17,7 @@ func TestNew(t *testing.T) {
 		for ss := 0; ss <= 15; ss++ {
 			for x := 10; x <= 18; x++ {
 				for y := 10; y <= 20; y++ {
-					sh := New(coordinates.NewGlobalCoordinates(x, y), Density(Density_Standard))
+					sh := New(coordinates.NewSpaceCoordinates(x, y), Density(Density_Standard))
 					err := sh.GenerateMissingDetails(dice.NewDicepool())
 					if err != nil {
 						t.Errorf("err: %v", err)

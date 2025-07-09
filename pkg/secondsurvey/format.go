@@ -14,20 +14,23 @@ const (
 )
 
 type SecondSurveyReport struct {
-	Hex        string
-	Name       string
-	UWP        string
-	Remarks    []string
-	Importance string
-	Economic   string
-	Culture    string
-	Nobility   []string
-	Bases      []string
-	Zone       string
-	PBG        string
-	Worlds     string
-	Allegiance string
-	Stellar    string
+	Hex            string
+	Name           string
+	UWP            string
+	Remarks        []string
+	Importance     string
+	Economic       string
+	Culture        string
+	Nobility       []string
+	Bases          []string
+	Zone           string
+	PBG            string
+	Worlds         string
+	Allegiance     string
+	Stellar        string
+	Sector         string
+	SubSectorIndex string
+	RU             string
 }
 
 func (ssr SecondSurveyReport) Format() string {
@@ -68,7 +71,7 @@ func parse_t5ss(str string) (SecondSurveyReport, error) {
 	ssr := SecondSurveyReport{}
 	dataSet := strings.Split(str, "\t")
 	for i, data := range dataSet {
-		err := fmt.Errorf("dataset[%v] not parsed", i)
+		err := fmt.Errorf("t5ss dataset[%v] not parsed", i)
 		switch i {
 		case 0:
 			ssr.Hex, err = parseExpression(data, hex)
@@ -113,8 +116,12 @@ func parse_tmss(str string) (SecondSurveyReport, error) {
 	ssr := SecondSurveyReport{}
 	dataSet := strings.Split(str, "\t")
 	for i, data := range dataSet {
-		err := fmt.Errorf("dataset[%v] not parsed", i)
+		err := fmt.Errorf("tmss dataset[%v] not parsed", i)
 		switch i {
+		case 0:
+			ssr.Sector, err = parseExpression(data, anyText)
+		case 1:
+			ssr.SubSectorIndex, err = parseExpression(data, anyText)
 		case 2:
 			ssr.Hex, err = parseExpression(data, hex)
 		case 3:
@@ -143,6 +150,8 @@ func parse_tmss(str string) (SecondSurveyReport, error) {
 			ssr.Allegiance, err = parseExpression(data, anyText)
 		case 10:
 			ssr.Stellar, err = parseExpression(data, anyText)
+		case 16:
+			ssr.RU, err = parseExpression(data, anyText)
 		}
 		if err != nil {
 			return ssr, fmt.Errorf("parse dataset[%v]: %v", i, err)
@@ -157,12 +166,12 @@ func parseSlice(s, separator string) ([]string, error) {
 }
 
 var hex = `^(\d){3,4}$`
-var uwp = `^[0-Z]{7}-[0-Z]$`
-var ix = `^\{[+|-]?[0-9]\}$`
-var ex = `^\([0-Z]{3}[+|-][0-Z]\)$`
-var cx = `^\[[0-Z]{4}\]$`
+var uwp = `^[0-Z|\?]{7}-[0-Z|\?]$`
+var ix = `^\{[ ]?[+|-]?[0-9][ ]?\}$`
+var ex = `^\([ ]*[0-Z]{3}[+|-][0-Z]\)$`
+var cx = `^\[[ ]*[0-Z]{4}\]$`
 var zone = `^[-|A|R]$`
-var pbg = `^[1-9][0-3][0-6]$`
+var pbg = `^[0-9|\?][0-9|\?][0-9|\?]$`
 var worlds = `^[0-9]+$`
 var anyText = `^.*$`
 

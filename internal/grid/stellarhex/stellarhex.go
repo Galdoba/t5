@@ -18,7 +18,7 @@ const (
 )
 
 type StellarHex struct {
-	Coordiantes     coordinates.GlobalWorldCoordinates
+	Coordiantes     coordinates.SpaceCoordinates
 	Density         int
 	StarSystem      string
 	D               string
@@ -35,7 +35,7 @@ type StellarHex struct {
 	NB              string
 }
 
-func New(crd coordinates.GlobalWorldCoordinates, options ...StellarHexOption) *StellarHex {
+func New(crd coordinates.SpaceCoordinates, options ...StellarHexOption) *StellarHex {
 	sh := &StellarHex{
 		Coordiantes: crd,
 		Density:     Density_Undefined,
