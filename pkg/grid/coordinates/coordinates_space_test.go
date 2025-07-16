@@ -4,9 +4,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Galdoba/t5/internal/grid/coordinates/cube"
-	"github.com/Galdoba/t5/internal/grid/coordinates/global"
-	"github.com/Galdoba/t5/internal/grid/coordinates/local"
+	"github.com/Galdoba/t5/pkg/grid/coordinates/cube"
+	"github.com/Galdoba/t5/pkg/grid/coordinates/global"
+	"github.com/Galdoba/t5/pkg/grid/coordinates/local"
 )
 
 func TestNewSpaceCoordinates(t *testing.T) {

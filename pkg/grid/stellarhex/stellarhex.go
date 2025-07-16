@@ -1,8 +1,8 @@
 package stellarhex
 
 import (
-	"github.com/Galdoba/t5/internal/grid/coordinates"
 	"github.com/Galdoba/t5/pkg/dice"
+	"github.com/Galdoba/t5/pkg/grid/coordinates"
 )
 
 const (

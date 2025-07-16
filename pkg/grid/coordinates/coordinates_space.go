@@ -3,11 +3,11 @@ package coordinates
 import (
 	"fmt"
 
-	"github.com/Galdoba/t5/internal/grid/coordinates/convert"
-	"github.com/Galdoba/t5/internal/grid/coordinates/cube"
-	"github.com/Galdoba/t5/internal/grid/coordinates/global"
-	"github.com/Galdoba/t5/internal/grid/coordinates/local"
-	"github.com/Galdoba/t5/internal/grid/coordinates/sector"
+	"github.com/Galdoba/t5/pkg/grid/coordinates/convert"
+	"github.com/Galdoba/t5/pkg/grid/coordinates/cube"
+	"github.com/Galdoba/t5/pkg/grid/coordinates/global"
+	"github.com/Galdoba/t5/pkg/grid/coordinates/local"
+	"github.com/Galdoba/t5/pkg/grid/coordinates/sector"
 )
 
 type SpaceCoordinates struct {
