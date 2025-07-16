@@ -242,6 +242,17 @@ func (sm *SpaceMap) Save(path string) error {
 	return os.WriteFile(path, bt, 0755)
 }
 
+func (sm *SpaceMap) Load(path string) error {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(data, sm); err != nil {
+		return fmt.Errorf("failed to unmarshal: %v", err)
+	}
+	return nil
+}
+
 func parseFormat(lines []string) (string, int) {
 	for l, line := range lines {
 		if strings.Contains(line, "UWP") && strings.Contains(line, "Name") {
