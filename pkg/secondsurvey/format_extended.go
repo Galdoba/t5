@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Galdoba/t5/internal/grid/coordinates"
+	"github.com/Galdoba/t5/pkg/grid/coordinates"
 )
 
 const (

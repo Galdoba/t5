@@ -1,6 +1,6 @@
 package secondsurvey
 
-import "github.com/Galdoba/t5/internal/grid/coordinates"
+import "github.com/Galdoba/t5/pkg/grid/coordinates"
 
 type DB struct {
 	path     string

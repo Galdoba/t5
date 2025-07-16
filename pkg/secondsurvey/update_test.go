@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Galdoba/t5/internal/grid/coordinates"
-	"github.com/Galdoba/t5/internal/grid/coordinates/sector"
+	"github.com/Galdoba/t5/pkg/grid/coordinates"
+	"github.com/Galdoba/t5/pkg/grid/coordinates/sector"
 )
 
 func TestFetchOUT(t *testing.T) {
