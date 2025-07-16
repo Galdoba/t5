@@ -11,11 +11,11 @@ import (
 )
 
 func TestFetchOUT(t *testing.T) {
-	err := FetchOTU()
-	if err != nil {
-		fmt.Println(err)
-		panic(0)
-	}
+	// err := FetchOTU()
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	panic(0)
+	// }
 
 	sect := ReadFile(`c:\Users\pemaltynov\travellermap\res\Sectors\sectors.json`)
 	fmt.Println(len(sect.Sectors))
@@ -98,8 +98,10 @@ func TestFetchOUT(t *testing.T) {
 			crd := coordinates.NewSpaceCoordinates(currentSector.X, currentSector.Y, lx, ly)
 			sse = InjectCoordinates(sse, crd)
 			worldCound++
-			sseKeys = append(sseKeys, sse.String())
-			sseMap[sse.String()] = sse
+			q, r := crd.GlobalValues()
+			key := fmt.Sprintf("{%v,%v}", q, r)
+			sseKeys = append(sseKeys, key)
+			sseMap[key] = sse
 			fmt.Println(sse.String())
 		}
 
@@ -148,6 +150,7 @@ func TestFetchOUT(t *testing.T) {
 	for k, v := range unparsed {
 		fmt.Println(k, v)
 	}
+	sm.Map = sseMap
 	if err := sm.Save(`c:\Users\pemaltynov\travellermap\res\merge\compiledSurveyData.json`); err != nil {
 		panic(err)
 	}
