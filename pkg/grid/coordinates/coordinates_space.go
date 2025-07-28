@@ -97,3 +97,28 @@ func (sc SpaceCoordinates) Validate() error {
 	}
 	return nil
 }
+
+func (sc SpaceCoordinates) Ring(radius int) []SpaceCoordinates {
+	ring := []SpaceCoordinates{}
+	for _, r := range cube.Ring(sc.cube, radius) {
+		crd := NewSpaceCoordinates(r.Q, r.R, r.S)
+		ring = append(ring, crd)
+	}
+	return ring
+}
+func (sc SpaceCoordinates) Neighbors() []SpaceCoordinates {
+	ring := []SpaceCoordinates{}
+	for _, r := range cube.Neighbors(sc.cube) {
+		crd := NewSpaceCoordinates(r.Q, r.R, r.S)
+		ring = append(ring, crd)
+	}
+	return ring
+}
+func (sc SpaceCoordinates) Spiral(radius int) []SpaceCoordinates {
+	ring := []SpaceCoordinates{}
+	for _, r := range cube.Spiral(sc.cube, radius) {
+		crd := NewSpaceCoordinates(r.Q, r.R, r.S)
+		ring = append(ring, crd)
+	}
+	return ring
+}
