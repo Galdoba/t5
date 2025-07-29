@@ -1,7 +1,6 @@
 package secondsurvey
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -35,11 +34,11 @@ func init() {
 	fetchRoot = filepath.Join(home, "travellermap")
 	dbRoot = filepath.Join(home, ".local", "share", "t5")
 	dbPath = filepath.Join(home, ".cache", "t5", "otu", "M1105", "spacemap")
-	fmt.Println(fetchRoot)
-	fmt.Println(dbPath)
-	fmt.Println(os.TempDir())
-	for _, dir := range []string{fetchRoot, dbRoot, dbPath} {
-		os.MkdirAll(dir, 0755)
-	}
+	// fmt.Println(fetchRoot)
+	// fmt.Println(dbPath)
+	// fmt.Println(os.TempDir())
+	// for _, dir := range []string{fetchRoot, dbRoot, dbPath} {
+	// 	os.MkdirAll(dir, 0755)
+	// }
 
 }
