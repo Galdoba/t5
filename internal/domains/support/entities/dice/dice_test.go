@@ -1,4 +1,4 @@
-package dice
+package roll
 
 import (
 	"fmt"
@@ -8,5 +8,6 @@ import (
 func TestRoll(t *testing.T) {
 	fmt.Println(Roll(2))
 	fmt.Println(Roll(3))
-	fmt.Println(Roll(4))
+	rr := Roll(5)
+	fmt.Println(rr.Sum(), rr.Results())
 }
